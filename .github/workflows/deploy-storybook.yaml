@@ -2,12 +2,6 @@ name: Deploy Storybook
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to deploy"
-        required: true
-        default: "master"
-        type: string
 
 permissions:
   contents: read
@@ -25,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ github.ref_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -54,6 +48,6 @@ jobs:
       - name: Deployment summary
         run: |
           echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch:** ${{ github.event.inputs.branch }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Deployment Time:** $(date)" >> $GITHUB_STEP_SUMMARY
           echo "- **Status:** ✅ Deployed to GitHub Pages" >> $GITHUB_STEP_SUMMARY
